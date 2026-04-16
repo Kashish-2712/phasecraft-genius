@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Phone, Anchor } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Results", href: "#results" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "Ceramic Coating", href: "/services/ceramic-coating" },
+  { label: "About", href: "/#about" },
+  { label: "Results", href: "/#results" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -30,7 +32,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group" aria-label="Atlantic Boat Detailing Home">
+        <Link to="/" className="flex items-center gap-2 group" aria-label="Atlantic Boat Detailing Home">
           <Anchor className="w-8 h-8 text-ocean transition-transform group-hover:rotate-12" />
           <div className="flex flex-col">
             <span className="font-display text-lg font-bold text-primary-foreground leading-tight">
@@ -40,19 +42,29 @@ export default function Navbar() {
               Boat Detailing
             </span>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="font-body text-sm font-medium text-primary-foreground/80 hover:text-ocean-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-ocean after:transition-all hover:after:w-full"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="font-body text-sm font-medium text-primary-foreground/80 hover:text-ocean-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-ocean after:transition-all hover:after:w-full"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="font-body text-sm font-medium text-primary-foreground/80 hover:text-ocean-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-ocean after:transition-all hover:after:w-full"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
 
         {/* CTA + Phone */}
@@ -84,16 +96,27 @@ export default function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-primary/98 backdrop-blur-md border-t border-ocean/20 animate-in slide-in-from-top-2">
           <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="font-body text-base text-primary-foreground/90 hover:text-ocean-light py-2 transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.href.startsWith("/") && !link.href.startsWith("/#") ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="font-body text-base text-primary-foreground/90 hover:text-ocean-light py-2 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="font-body text-base text-primary-foreground/90 hover:text-ocean-light py-2 transition-colors"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
             <a href="tel:+15551234567" className="flex items-center gap-2 text-primary-foreground/80 font-body text-sm py-2">
               <Phone className="w-4 h-4" />
               (555) 123-4567
